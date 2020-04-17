@@ -1,7 +1,9 @@
 package model;
 
+import javax.persistence.*;
 import java.util.Objects;
-
+@Entity
+@Table(name = "users")
 public class User {
 
     public User() {
@@ -13,12 +15,17 @@ public class User {
         this.password = password;
      }
 
+     @Id
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(name = "user")
     private String login;
 
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "password")
     private String password;
 
     public User(Long id, String login, String email, String pass) {

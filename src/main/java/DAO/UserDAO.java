@@ -42,21 +42,26 @@ public class UserDAO {
 
     public void removeUser(User user) throws SQLException {
         long id = user.getId();
-        Statement stm = connection.createStatement();
-        stm.execute("delete from users where id='" + id + "'");
+        PreparedStatement stm = connection.prepareStatement("delete from users where id=?");
+        stm.setLong(1, id);
+        stm.executeUpdate();
         stm.close();
     }
 
     public void updateUser(User user) throws SQLException {
-        PreparedStatement stmt = connection.prepareStatement("update users set login='" + user.getLogin() +"', email='" + user.getEmail() + "', password='" + user.getPassword() +"' where id='"+ user.getId()+"'");
+        PreparedStatement stmt = connection.prepareStatement("update users set login=?, email=?, password=? where id=?");
+        stmt.setString(1, user.getLogin());
+        stmt.setString(2, user.getEmail());
+        stmt.setString(3, user.getPassword());
+        stmt.setLong(4, user.getId());
         stmt.executeUpdate();
         stmt.close();
     }
 
     public User getUserById(long id) throws SQLException {
-        Statement stmt = connection.createStatement();
-        stmt.execute("select * from users where id='" + id + "'");
-        ResultSet result = stmt.getResultSet();
+        PreparedStatement stmt = connection.prepareStatement("select * from users where id=?");
+        stmt.setLong(1, id);
+        ResultSet result = stmt.executeQuery();
         if (result.next()) {
             String login = result.getString("login");
             String email = result.getString("email");

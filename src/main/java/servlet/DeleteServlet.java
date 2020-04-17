@@ -17,12 +17,8 @@ public class DeleteServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long id = Long.parseLong(req.getParameter("id"));
         UserService userService = new UserService();
-        try {
-            User user = userService.getUserById(id);
-            userService.removeUser(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        User user = userService.getUserById(id);
+        userService.removeUser(user);
         UserServiceServlet userServiceServlet = new UserServiceServlet();
         userServiceServlet.doGet(req, resp);
 

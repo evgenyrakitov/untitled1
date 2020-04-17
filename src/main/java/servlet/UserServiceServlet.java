@@ -22,11 +22,7 @@ public class UserServiceServlet extends HttpServlet {
         UserService userService = new UserService();
         userService.createTable();
         List<User> users = new ArrayList<>();
-        try {
-            users = userService.getAllUser();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        users = userService.getAllUser();
         req.setAttribute("userList", users);
 
 
@@ -40,11 +36,7 @@ public class UserServiceServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         UserService userService = new UserService();
-        try {
-            userService.addUser(new User(login, email, password));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        userService.addUser(new User(login, email, password));
         doGet(req, resp);
     }
 }

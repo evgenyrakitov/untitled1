@@ -21,13 +21,9 @@ public class UserUpdateServlet extends HttpServlet {
         long id = Long.parseLong(req.getParameter("id"));
         UserService userService = new UserService();
 
-        try {
-            User user = userService.getUserById(id);
-            req.setAttribute("user", user);
+        User user = userService.getUserById(id);
+        req.setAttribute("user", user);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         RequestDispatcher dispatcher = req.getServletContext()
                 .getRequestDispatcher("/update.jsp");
         dispatcher.forward(req, resp);
@@ -40,11 +36,7 @@ public class UserUpdateServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         User user = new User(id, login, email, password);
-        try {
-            userService.updateUser(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        userService.updateUser(user);
         UserServiceServlet userServiceServlet = new UserServiceServlet();
         userServiceServlet.doGet(req, resp);
     }

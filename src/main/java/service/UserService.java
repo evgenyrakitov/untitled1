@@ -15,32 +15,28 @@ public class UserService {
 
     }
 
-    public List<User> getAllUser() throws SQLException {
+    public List<User> getAllUser() {
         return getUserDAO().getAllUser();
     }
 
-    public void addUser(User user) throws SQLException {
+    public void addUser(User user) {
         getUserDAO().addUser(user);
     }
 
-    public void  removeUser(User user) throws SQLException {
+    public void  removeUser(User user) {
        getUserDAO().removeUser(user);
     }
 
-    public void updateUser(User user) throws SQLException {
+    public void updateUser(User user) {
         getUserDAO().updateUser(user);
     }
 
-    public User getUserById(long id) throws SQLException {
+    public User getUserById(long id) {
         return getUserDAO().getUserById(id);
     }
 
     public void createTable() {
-        try {
-            getUserDAO().createTable();
-        } catch (SQLException sql) {
-            sql.printStackTrace();
-        }
+        getUserDAO().createTable();
     }
 
     private static Connection getMysqlConnection() {

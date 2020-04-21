@@ -1,6 +1,7 @@
 package service;
 
 import DAO.UserDAO;
+import DAO.UserHibernateDAO;
 import model.User;
 
 import java.sql.Connection;
@@ -16,23 +17,23 @@ public class UserService {
     }
 
     public List<User> getAllUser() {
-        return getUserDAO().getAllUser();
+        return new UserHibernateDAO().getAll();
     }
 
     public void addUser(User user) {
-        getUserDAO().addUser(user);
+        new UserHibernateDAO().create(user);
     }
 
     public void  removeUser(User user) {
-       getUserDAO().removeUser(user);
+       new UserHibernateDAO().remove(user);
     }
 
     public void updateUser(User user) {
-        getUserDAO().updateUser(user);
+        new UserHibernateDAO().update(user);
     }
 
     public User getUserById(long id) {
-        return getUserDAO().getUserById(id);
+        return new UserHibernateDAO().getUserForId(id);
     }
 
     public void createTable() {

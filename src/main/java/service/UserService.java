@@ -1,7 +1,9 @@
 package service;
 
-import DAO.UserDAO;
+import DAO.UserJDBCDAO;
 import DAO.UserHibernateDAO;
+
+import Util.DBHelper;
 import model.User;
 
 import java.sql.Connection;
@@ -12,8 +14,21 @@ import java.util.List;
 
 public class UserService {
 
-    public UserService() {
+    private static UserService userService;
 
+    private UserService() {
+
+    }
+
+    public static UserService getInstance() {
+        if (userService == null) {
+            synchronized (UserService.class) {
+                if (userService == null) {
+                    userService = new UserService();
+                }
+            }
+        }
+        return userService;
     }
 
     public List<User> getAllUser() {
@@ -40,34 +55,8 @@ public class UserService {
         getUserDAO().createTable();
     }
 
-    private static Connection getMysqlConnection() {
 
-        try {
-            DriverManager.registerDriver((Driver) Class.forName("com.mysql.jdbc.Driver").newInstance());
-
-            StringBuilder url = new StringBuilder();
-
-            url.
-                    append("jdbc:mysql://").        //db type
-                    append("localhost:").           //host name
-                    append("3306/").                //port
-                    append("db_example?").          //db name
-                    append("user=root&").          //login
-                    append("password=Akitov2009").
-                    append("&serverTimezone=UTC");
-
-
-            System.out.println("URL: " + url + "\n");
-
-            Connection connection = DriverManager.getConnection(url.toString());
-            return connection;
-        } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new IllegalStateException();
-        }
-    }
-
-    private static UserDAO getUserDAO() {
-        return new UserDAO(getMysqlConnection());
+    private static UserJDBCDAO getUserDAO() {
+        return new UserJDBCDAO(DBHelper.getConnection());
     }
 }

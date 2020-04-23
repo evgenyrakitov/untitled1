@@ -19,9 +19,7 @@ public class UserUpdateServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long id = Long.parseLong(req.getParameter("id"));
-        UserService userService = new UserService();
-
-        User user = userService.getUserById(id);
+        User user = UserService.getInstance().getUserById(id);
         req.setAttribute("user", user);
 
         RequestDispatcher dispatcher = req.getServletContext()
@@ -30,13 +28,13 @@ public class UserUpdateServlet extends HttpServlet {
     }
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserService userService = new UserService();
+
         long id = Long.parseLong(req.getParameter("id"));
         String login = req.getParameter("login");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         User user = new User(id, login, email, password);
-        userService.updateUser(user);
+        UserService.getInstance().updateUser(user);
         UserServiceServlet userServiceServlet = new UserServiceServlet();
         userServiceServlet.doGet(req, resp);
     }

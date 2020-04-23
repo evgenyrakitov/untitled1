@@ -19,10 +19,10 @@ import java.util.List;
 public class UserServiceServlet extends HttpServlet {
 
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserService userService = new UserService();
-        userService.createTable();
+
+        UserService.getInstance().createTable();
         List<User> users = new ArrayList<>();
-        users = userService.getAllUser();
+        users = UserService.getInstance().getAllUser();
         req.setAttribute("userList", users);
 
 
@@ -35,8 +35,7 @@ public class UserServiceServlet extends HttpServlet {
         String login = req.getParameter("login");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
-        UserService userService = new UserService();
-        userService.addUser(new User(login, email, password));
+        UserService.getInstance().addUser(new User(login, email, password));
         doGet(req, resp);
     }
 }

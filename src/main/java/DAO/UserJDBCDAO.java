@@ -1,5 +1,6 @@
 package DAO;
 
+import Util.DBHelper;
 import model.User;
 
 import java.sql.*;
@@ -77,8 +78,8 @@ public class UserJDBCDAO implements DAO{
     @Override
     public List<User> getAll() {
         List <User> users = new ArrayList<>();
-        try (Statement stmt = connection.prepareStatement("select * from users")) {
-            ResultSet result = stmt.getResultSet();
+        try (PreparedStatement stmt = connection.prepareStatement("select * from users")) {
+            ResultSet result = stmt.executeQuery();
             while (result.next()) {
                 Long id = result.getLong("id");
                 String login = result.getString("login");

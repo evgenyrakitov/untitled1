@@ -2,6 +2,8 @@ package Util;
 
 import model.User;
 import org.hibernate.HibernateException;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
 import java.sql.Connection;
@@ -19,7 +21,7 @@ public class DBHelper {
 
     private static Connection connection;
 
-    private static org.hibernate.cfg.Configuration configuration;
+    private static SessionFactory sessionFactory;
 
     public static DBHelper getInstance() {
         if (dbHelper == null) {
@@ -33,9 +35,8 @@ public class DBHelper {
     }
     public static Connection getConnection() {
 
-        if (connection == null) {
-            synchronized (Connection.class) {
-                if (connection == null) {
+
+
                     try {
                         DriverManager.registerDriver((Driver) Class.forName("com.mysql.jdbc.Driver").newInstance());
 
@@ -58,26 +59,28 @@ public class DBHelper {
                         e.printStackTrace();
                         throw new IllegalStateException();
                     }
-                }
-            }
-        }
+
+
+
         return connection;
     }
 
-    public static Configuration getConfiguration() {
-        if (configuration == null) {
+    public static SessionFactory getConfiguration() {
+        if (sessionFactory == null) {
             synchronized (Configuration.class) {
-                if (configuration == null) {
+                if (sessionFactory == null) {
                     try {
-                        org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration().configure();
-                        configuration.addAnnotatedClass(User.class);
-
+                        Configuration configuration = new Configuration().configure()
+                                                                        .addAnnotatedClass(User.class);
+                        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+                        builder.applySettings(configuration.getProperties());
+                        sessionFactory = configuration.buildSessionFactory(builder.build());
                     } catch (HibernateException e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
-        return configuration;
+        return sessionFactory;
     }
 }

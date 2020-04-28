@@ -4,6 +4,7 @@ import DAO.UserJDBCDAO;
 import DAO.UserHibernateDAO;
 
 import Util.DBHelper;
+import Util.UserDaoFactory;
 import model.User;
 
 import java.sql.Connection;
@@ -32,31 +33,32 @@ public class UserService {
     }
 
     public List<User> getAllUser() {
-        return new UserHibernateDAO().getAll();
+        return new UserDaoFactory().getUserDaoFactory().getAll();
     }
 
     public void addUser(User user) {
-        new UserHibernateDAO().create(user);
+        new UserDaoFactory().getUserDaoFactory().create(user);
     }
 
     public void  removeUser(User user) {
-       new UserHibernateDAO().remove(user);
+       new UserDaoFactory().getUserDaoFactory().remove(user);
     }
 
     public void updateUser(User user) {
-        new UserHibernateDAO().update(user);
+        new UserDaoFactory().getUserDaoFactory().update(user);
     }
 
     public User getUserById(long id) {
-        return new UserHibernateDAO().getUserForId(id);
+        return new UserDaoFactory().getUserDaoFactory().getUserForId(id);
     }
 
     public void createTable() {
-        getUserDAO().createTable();
+         getUserJDBCDAO().createTable();
     }
 
-
-    private static UserJDBCDAO getUserDAO() {
+    public UserJDBCDAO getUserJDBCDAO() {
         return new UserJDBCDAO(DBHelper.getConnection());
     }
+
+
 }

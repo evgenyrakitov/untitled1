@@ -15,4 +15,6 @@ public interface DAO {
     User getUserForId(long id);
 
     void remove(User user);
+
+
 }
